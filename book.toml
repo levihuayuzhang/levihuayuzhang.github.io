@@ -1,0 +1,6 @@
+[book]
+authors = ["Huayu Zhang"]
+language = "en"
+multilingual = true
+src = "src"
+title = "星辰大海"
