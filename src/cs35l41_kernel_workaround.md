@@ -21,8 +21,8 @@
 
 ## 步骤
 ```c
-// 修改社区的补丁lenovo-7i-gen7-sound-6.2.0-rc3-0.0.5b-002.patch 
-
+// 修改社区的补丁lenovo-7i-gen7-sound-6.2.0-rc3-0.0.5b-002.patch (https://bugzilla.kernel.org/attachment.cgi?id=303828)
+// (https://gist.github.com/levihuayuzhang/6137ae4ae46301a355fd37c63e0d876a)
 diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
 index f7815ee24f83..93d86c5a9d53 100644
 --- a/sound/pci/hda/cs35l41_hda.c
@@ -145,7 +145,7 @@ diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
 index e103bb3693c0..8ec2b0f99d8c 100644
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9682,6 +9682,11 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+@@ -9734,6 +9734,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
  	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
  	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
  	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
@@ -161,12 +161,19 @@ index e103bb3693c0..8ec2b0f99d8c 100644
 # download, verifym and extract source code
 # modify the patch, then
 make mrproper # clean up
+
 zcat /proc/config.gz  > .config # use running kernel config
+
 patch -p1 < ./lenovo-7i-gen7-sound-6.2.0-rc3-0.0.5b-002.patch # applying patch
+
 make -j$(nproc) # max parallel compile
+
 make modules # compile in tree modules
-sudo make modules_install # install corresponding module
+
+sudo make INSTALL_MOD_STRIP=1 modules_install # install corresponding module
+
 make bzImage # compile kernle image
+
 # copy image to /boot directory and rename it
 cp -v arch/x86/boot/bzImage /boot/vmlinuz-linux6.3.4
 ```
