@@ -1,9 +1,11 @@
 # 记一次内核之旅--修复板载声卡前置放大器驱动
 
 ## 问题
+
 笔记本电脑在Linux下一直没有办法正常使用内置音响，初步判断是声卡驱动的问题。
 
 ## 寻找解题
+
 1. 首先通过`Arch Linux Wiki`，偶然间看到一个sof-firmware，安装之后可以正常检测到`Realtek`声卡。耳机孔，蓝牙运作正常。但内置音响声音非常小，且底部低音音响不出声。据此判断，应该是有模拟放大器未激活，导致模拟电路输出功率不足。
 
 2. 用`alsa-info`脚本进行信息搜集：用于解码的声卡应该为`Realtek ALC287`， 放大器芯片应该为`Cirrus cs35l41`
@@ -15,11 +17,13 @@
 5. 结合对[kernel邮件组](https://lore.kernel.org/lkml/c72a2f28a6e5c2c3c9ed17269bd56e7484df960c.camel@ljones.dev/)的潜伏观察，锁定了一个[thread](https://bugzilla.kernel.org/show_bug.cgi?id=216194)。这里有位大佬Cameron Berkenpas自己写了patch并在自己的电脑上进行测试，通过了半年的稳定性测试。而另一位大佬[确认了](https://bugzilla.kernel.org/show_bug.cgi?id=216194#c106)和我相同型号设备也可使用同patch。于是准备自己动手打内核补丁。
 
 ## 思路
+
 1. 参照经社区验证的[补丁](https://bugzilla.kernel.org/attachment.cgi?id=303828&action=diff)，进行自己相应的[修改](https://bugzilla.kernel.org/show_bug.cgi?id=216194#c108)。
 
 2. 下载stable源码，打补丁，编译内核及对应内核模块，安装内核和内核模块，生成initramfs，用dkms安装树外模块（nvidia驱动等），最后更新grub配置，重启，进入新内核。
 
 ## 步骤
+
 ```c
 // 修改社区的补丁lenovo-7i-gen7-sound-6.2.0-rc3-0.0.5b-002.patch (https://bugzilla.kernel.org/attachment.cgi?id=303828)
 // (https://gist.github.com/levihuayuzhang/6137ae4ae46301a355fd37c63e0d876a)
@@ -208,6 +212,7 @@ reboot now
 ```
 
 ## 总结
+
 1. 这是一个非常危险的patch（仅仅时一个来自社区的workaround而不是fix），未经过Cirrus（硬件制造商）和Lenovo（设备制造商）的官方确认。由社区人员经猜测在另一Levono型号上测试成功，并经猜想应该可以使用到有着相同芯片和类似设计的电脑上。
 
 2. 声卡电路唯一的保护是BIOS中的ACPI控制程序，但恰恰Lenovo在出厂时未在其中合理配置。（Windows中应该是硬编码在了驱动程序中，而Linux社区则还未得到支持）
@@ -215,6 +220,7 @@ reboot now
 3. patch的危险之处：设置错一位bit，就有可能烧毁电路（功率在换能电路中指数级增长）
 
 ## 后记
+
 1. 在Cirrus或Lenovo把`quirk`投入内核树前，如果还想继续使用内置音响，必须自己打patch编译内核。（中低音量低音频音响发声，高音量高音频音响发声，应该是存在分频问题）（这导致音响分频不正确，且无法正确调节音量，至少是Gnome中）
 
 2. 或者买个usb音响先凑合
