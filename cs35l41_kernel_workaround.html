@@ -1,0 +1,432 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>记一次内核之旅--修复板载声卡放大器驱动 - 星辰大海</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded affix "><li class="part-title">Blogs</li><li class="chapter-item expanded "><a href="github_ci.html"><strong aria-hidden="true">1.</strong> Github 部署博客</a></li><li class="chapter-item expanded "><a href="cs35l41_kernel_workaround.html" class="active"><strong aria-hidden="true">2.</strong> 记一次内核之旅--修复板载声卡放大器驱动</a></li><li class="chapter-item expanded affix "><li class="part-title">About</li><li class="chapter-item expanded "><a href="about_author.html"><strong aria-hidden="true">3.</strong> 关于作者</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">星辰大海</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="记一次内核之旅--修复板载声卡前置放大器驱动"><a class="header" href="#记一次内核之旅--修复板载声卡前置放大器驱动">记一次内核之旅--修复板载声卡前置放大器驱动</a></h1>
+<h2 id="问题"><a class="header" href="#问题">问题</a></h2>
+<p>笔记本电脑在Linux下一直没有办法正常使用内置音响，初步判断是声卡驱动的问题。</p>
+<h2 id="寻找解题"><a class="header" href="#寻找解题">寻找解题</a></h2>
+<ol>
+<li>
+<p>首先通过<code>Arch Linux Wiki</code>，偶然间看到一个sof-firmware，安装之后可以正常检测到<code>Realtek</code>声卡。耳机孔，蓝牙运作正常。但内置音响声音非常小，且底部低音音响不出声。据此判断，应该是有模拟放大器未激活，导致模拟电路输出功率不足。</p>
+</li>
+<li>
+<p>用<code>alsa-info</code>脚本进行信息搜集：用于解码的声卡应该为<code>Realtek ALC287</code>， 放大器芯片应该为<code>Cirrus cs35l41</code></p>
+</li>
+<li>
+<p>进行广泛搜索后，发现了一篇<a href="https://gist.github.com/lamperez/862763881c0e1c812392b5574727f6ff">Gist</a>，作者的<code>amp</code>与我相同。但其解决方案为直接对<code>BIOS</code>进行反编译，然后修改<code>_DSD entry</code>。作者电脑为ASUS的<code>Zenbook UX3402</code>与我不同。且我在对自己的BIOS进行反编译时，发现Lenovo的编码方式无法通过Intel的反编译器完整解析，便作罢。</p>
+</li>
+<li>
+<p>向<a href="https://bugs.archlinux.org/task/78565">Arch Linux Bug</a>反馈，求助。按照<a href="https://wiki.archlinux.org/title/Kernel#Debugging_regressions">Debugging Regressions</a>进行相应测试，无果。于是转战<a href="https://bugzilla.kernel.org/">kernel bugzilla</a></p>
+</li>
+<li>
+<p>结合对<a href="https://lore.kernel.org/lkml/c72a2f28a6e5c2c3c9ed17269bd56e7484df960c.camel@ljones.dev/">kernel邮件组</a>的潜伏观察，锁定了一个<a href="https://bugzilla.kernel.org/show_bug.cgi?id=216194">thread</a>。这里有位大佬Cameron Berkenpas自己写了patch并在自己的电脑上进行测试，通过了半年的稳定性测试。而另一位大佬<a href="https://bugzilla.kernel.org/show_bug.cgi?id=216194#c106">确认了</a>和我相同型号设备也可使用同patch。于是准备自己动手打内核补丁。</p>
+</li>
+</ol>
+<h2 id="思路"><a class="header" href="#思路">思路</a></h2>
+<ol>
+<li>
+<p>参照经社区验证的<a href="https://bugzilla.kernel.org/attachment.cgi?id=303828&amp;action=diff">补丁</a>，进行自己相应的<a href="https://bugzilla.kernel.org/show_bug.cgi?id=216194#c108">修改</a>。</p>
+</li>
+<li>
+<p>下载stable源码，打补丁，编译内核及对应内核模块，安装内核和内核模块，生成initramfs，用dkms安装树外模块（nvidia驱动等），最后更新grub配置，重启，进入新内核。</p>
+</li>
+</ol>
+<h2 id="步骤"><a class="header" href="#步骤">步骤</a></h2>
+<pre><code class="language-c">// 修改社区的补丁lenovo-7i-gen7-sound-6.2.0-rc3-0.0.5b-002.patch (https://bugzilla.kernel.org/attachment.cgi?id=303828)
+// (https://gist.github.com/levihuayuzhang/6137ae4ae46301a355fd37c63e0d876a)
+diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
+index f7815ee24f83..93d86c5a9d53 100644
+--- a/sound/pci/hda/cs35l41_hda.c
++++ b/sound/pci/hda/cs35l41_hda.c
+@@ -1270,6 +1270,8 @@ static int cs35l41_hda_read_acpi(struct cs35l41_hda *cs35l41, const char *hid, i
+ 	size_t nval;
+ 	int i, ret;
+ 
++	printk(&quot;CSC3551: probing %s\n&quot;, hid);
++
+ 	adev = acpi_dev_get_first_match_dev(hid, NULL, -1);
+ 	if (!adev) {
+ 		dev_err(cs35l41-&gt;dev, &quot;Failed to find an ACPI device for %s\n&quot;, hid);
+@@ -1287,8 +1289,9 @@ static int cs35l41_hda_read_acpi(struct cs35l41_hda *cs35l41, const char *hid, i
+ 	property = &quot;cirrus,dev-index&quot;;
+ 	ret = device_property_count_u32(physdev, property);
+ 	if (ret &lt;= 0) {
+-		ret = cs35l41_no_acpi_dsd(cs35l41, physdev, id, hid);
+-		goto err_put_physdev;
++	    //ret = cs35l41_no_acpi_dsd(cs35l41, physdev, id, hid);
++	    //goto err_put_physdev;
++	    goto no_acpi_dsd;
+ 	}
+ 	if (ret &gt; ARRAY_SIZE(values)) {
+ 		ret = -EINVAL;
+@@ -1383,6 +1386,92 @@ static int cs35l41_hda_read_acpi(struct cs35l41_hda *cs35l41, const char *hid, i
+ 	put_device(physdev);
+ 
+ 	return ret;
++
++no_acpi_dsd:
++	/*
++	 * Device CLSA0100 doesn't have _DSD so a gpiod_get by the label reset won't work.
++	 * And devices created by i2c-multi-instantiate don't have their device struct pointing to
++	 * the correct fwnode, so acpi_dev must be used here.
++	 * And devm functions expect that the device requesting the resource has the correct
++	 * fwnode.
++	 */
++
++	printk(&quot;CSC3551: no_acpi_dsd: %s\n&quot;, hid);
++
++	/* TODO: This is a hack. */
++	if (strncmp(hid, &quot;CSC3551&quot;, 7) == 0) {
++	    goto csc3551;
++	}
++
++	if (strncmp(hid, &quot;CLSA0100&quot;, 8) != 0)
++		return -EINVAL;
++
++	/* check I2C address to assign the index */
++	cs35l41-&gt;index = id == 0x40 ? 0 : 1;
++	cs35l41-&gt;hw_cfg.spk_pos = cs35l41-&gt;index;
++	cs35l41-&gt;channel_index = 0;
++	cs35l41-&gt;reset_gpio = gpiod_get_index(physdev, NULL, 0, GPIOD_OUT_HIGH);
++	cs35l41-&gt;hw_cfg.bst_type = CS35L41_EXT_BOOST_NO_VSPK_SWITCH;
++	hw_cfg-&gt;gpio2.func = CS35L41_GPIO2_INT_OPEN_DRAIN;
++	hw_cfg-&gt;gpio2.valid = true;
++	cs35l41-&gt;hw_cfg.valid = true;
++	put_device(physdev);
++
++	return 0;
++
++ csc3551:
++
++	printk(&quot;CSC3551: id == 0x%x\n&quot;, id);
++
++	// cirrus,dev-index
++	if(id == 0x40)
++	    cs35l41-&gt;index = 0;
++	else
++	    cs35l41-&gt;index = 1;
++
++	cs35l41-&gt;channel_index = 0;
++
++	cs35l41-&gt;reset_gpio = gpiod_get_index(physdev, NULL, cs35l41-&gt;index, GPIOD_OUT_LOW);
++
++	printk(&quot;CS3551: reset_gpio == 0x%x\n&quot;, cs35l41-&gt;reset_gpio);
++
++	// cirrus,speaker-position
++	if(cs35l41-&gt;index == 0)
++	    hw_cfg-&gt;spk_pos = 0;
++	else
++	    hw_cfg-&gt;spk_pos = 1;
++
++	// cirrus,gpio1-func
++	hw_cfg-&gt;gpio1.func = 1;
++        hw_cfg-&gt;gpio1.valid = true;
++
++	// cirrus,gpio2-func
++	hw_cfg-&gt;gpio2.func = 0x02;
++        hw_cfg-&gt;gpio2.valid = true;
++
++	// cirrus,boost-peak-milliamp
++	hw_cfg-&gt;bst_ipk = -1;
++
++	// cirrus,boost-ind-nanohenry
++	hw_cfg-&gt;bst_ind = -1;
++
++	// cirrus,boost-cap-microfarad
++	hw_cfg-&gt;bst_cap = -1;
++
++	cs35l41-&gt;speaker_id = cs35l41_get_speaker_id(physdev, cs35l41-&gt;index, nval, -1);
++
++        if (hw_cfg-&gt;bst_ind &gt; 0 || hw_cfg-&gt;bst_cap &gt; 0 || hw_cfg-&gt;bst_ipk &gt; 0)
++                hw_cfg-&gt;bst_type = CS35L41_INT_BOOST;
++        else
++                hw_cfg-&gt;bst_type = CS35L41_EXT_BOOST;
++
++	hw_cfg-&gt;valid = true;
++
++	put_device(physdev);
++
++	printk(&quot;CSC3551: Done.\n&quot;);
++
++	return 0;
+ }
+ 
+ int cs35l41_hda_probe(struct device *dev, const char *device_name, int id, int irq,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index e103bb3693c0..8ec2b0f99d8c 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9734,6 +9734,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3853, &quot;Lenovo Yoga 7 15ITL5&quot;, ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3855, &quot;Legion 7 16ITHG6&quot;, ALC287_FIXUP_LEGION_16ITHG6),
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, &quot;Lenovo Yoga7 14IAL7&quot;, ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x38a9, &quot;Lenovo ThinkBook 16p Gen4 IRH&quot;, ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, &quot;Lenovo E50-80&quot;, ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x17aa, 0x3977, &quot;IdeaPad S210&quot;, ALC283_FIXUP_INT_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3978, &quot;Lenovo B50-70&quot;, ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+</code></pre>
+<pre><code class="language-sh"># https://wiki.archlinux.org/title/Kernel/Traditional_compilation
+
+# download, verifym and extract source code
+# modify the patch, then
+make mrproper # clean up
+
+zcat /proc/config.gz  &gt; .config # use running kernel config
+
+patch -p1 &lt; ./lenovo-7i-gen7-sound-6.2.0-rc3-0.0.5b-002.patch # applying patch
+
+make -j$(nproc) # max parallel compile
+
+make modules # compile in tree modules
+
+sudo make INSTALL_MOD_STRIP=1 modules_install # install corresponding module
+
+make bzImage # compile kernle image
+
+# copy image to /boot directory and rename it
+cp -v arch/x86/boot/bzImage /boot/vmlinuz-linux6.3.4
+</code></pre>
+<pre><code class="language-sh"># make a new mkinitcpio preset for new kernel
+cp /etc/mkinitcpio.d/linux.preset /etc/mkinitcpio.d/linux6.3.4.preset
+
+# edit preset of mkinitcpio
+vim /etc/mkinitcpio.d/linux6.3.4.preset
+-------------------------------------
+...
+ALL_kver=&quot;/boot/vmlinuz-linux6.3.4&quot;
+...
+default_image=&quot;/boot/initramfs-linux6.3.4.img&quot;
+...
+fallback_image=&quot;/boot/initramfs-linux6.3.4-fallback.img&quot;
+</code></pre>
+<pre><code class="language-sh"># generate new initramfs for new kernel
+mkinitcpio -p linux6.3.4
+
+# update grub config
+sudo grub-mkconfig  -o /boot/grub/grub.cfg 
+
+# out of tree moudle install using dkms
+sudo dkms autoinstall -k 6.3.4
+
+# reboot the system and select new kernel at grub entry during booting
+reboot now
+</code></pre>
+<h2 id="总结"><a class="header" href="#总结">总结</a></h2>
+<ol>
+<li>
+<p>这是一个非常危险的patch（仅仅时一个来自社区的workaround而不是fix），未经过Cirrus（硬件制造商）和Lenovo（设备制造商）的官方确认。由社区人员经猜测在另一Levono型号上测试成功，并经猜想应该可以使用到有着相同芯片和类似设计的电脑上。</p>
+</li>
+<li>
+<p>声卡电路唯一的保护是BIOS中的ACPI控制程序，但恰恰Lenovo在出厂时未在其中合理配置。（Windows中应该是硬编码在了驱动程序中，而Linux社区则还未得到支持）</p>
+</li>
+<li>
+<p>patch的危险之处：设置错一位bit，就有可能烧毁电路（功率在换能电路中指数级增长）</p>
+</li>
+</ol>
+<h2 id="后记"><a class="header" href="#后记">后记</a></h2>
+<ol>
+<li>
+<p>在Cirrus或Lenovo把<code>quirk</code>投入内核树前，如果还想继续使用内置音响，必须自己打patch编译内核。（中低音量低音频音响发声，高音量高音频音响发声，应该是存在分频问题）（这导致音响分频不正确，且无法正确调节音量，至少是Gnome中）</p>
+</li>
+<li>
+<p>或者买个usb音响先凑合</p>
+</li>
+<li>
+<p>这个问题只能由芯片制造商或者设备制造商解决。因为只有他们才知道芯片的具体设计和相应的接口参数。已在<a href="https://lore.kernel.org/lkml/b4c202b2-ab29-e2aa-b141-0c967b2c1645@opensource.cirrus.com/">mail list</a>看到Cirrus的工程师了，希望社区能早日得到支持。</p>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="github_ci.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="about_author.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="github_ci.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="about_author.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
