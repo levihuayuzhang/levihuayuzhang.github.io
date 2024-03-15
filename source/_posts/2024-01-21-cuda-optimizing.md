@@ -2,8 +2,11 @@
 layout: post
 title:  "CUDA optimizing"
 date:   2024-03-15 15:26:30 +0800
-tags: CUDA GPGPU
-categories: HPC
+tags: 
+    - CUDA
+    - GPGPU
+categories: 
+    - HPC
 toc: true
 ---
 

@@ -2,8 +2,11 @@
 layout: post
 title:  "Classic Sorting Algorithms"
 date:   2023-12-21 15:26:30 +0800
-tags: algorithms datastructure
-categories: algorithms
+tags: 
+    - algorithms
+    - datastructure
+categories:
+    - algorithms
 toc: true
 ---
 
