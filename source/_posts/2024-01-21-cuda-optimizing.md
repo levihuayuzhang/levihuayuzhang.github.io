@@ -22,8 +22,6 @@ toc: true
 
 ### Global Memory:
 
-
-
 1. Data transfer between host and device: `minimize` or `overlap`
 
 2. 访存合并

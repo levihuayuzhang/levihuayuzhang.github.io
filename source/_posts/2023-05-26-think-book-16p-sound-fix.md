@@ -2,7 +2,9 @@
 layout: post
 title:  "记一次内核之旅--修复板载声卡前置放大器驱动"
 date:   2023-05-26 13:02:30 +0800
-tags: linux 设备驱动
+tags: 
+	- linux
+	- 设备驱动
 categories: 
 	- linux
 toc: true
