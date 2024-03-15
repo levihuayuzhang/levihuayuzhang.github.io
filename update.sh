@@ -1,2 +1,2 @@
 npm i -g hexo@latest
-npm i -g hexo-theme-next@latest
+npm i hexo-theme-next@latest
