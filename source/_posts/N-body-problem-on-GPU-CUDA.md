@@ -1,0 +1,13 @@
+---
+title: N-body problem on GPU (CUDA)
+tags:
+  - HPC CUDA GPGPU
+categories:
+  - HPC
+date: 2024-03-22 16:23:38
+---
+
+
+
+Ref: 
+1. <https://github.com/NVIDIA/cuda-samples/tree/master/Samples/5_Domain_Specific/nbody>
