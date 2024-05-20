@@ -15,6 +15,6 @@
   - [记一次内核之旅--修复板载声卡前置放大器驱动](dev-blogs/industrybb.md)
 
 ---
-# 社论
+# 其他
 - [社论](editorial/README.md)
   - [信息论与文明](editorial/information-theory-and-civilization.md)
