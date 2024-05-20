@@ -1,0 +1,78 @@
+---
+layout: post
+title:  "CUDA optimizing"
+date:   2024-03-15 15:26:30 +0800
+tags: 
+    - CUDA
+    - GPGPU
+categories: 
+    - HPC
+toc: true
+---
+
+## Bad Practice
+1. 使用递归：频繁使用启动kernel有额外开销。
+2. 静态变量：不允许在`__device__`和`__global__`函数中声明。
+3. malloc：访存很贵，malloc更贵。
+4. 指针实现的函数：注意指针是host还是device的指针。
+
+<!-- more -->
+
+## 访存优化:
+
+### Global Memory:
+
+
+1. Data transfer between host and device: `minimize` or `overlap`
+
+2. 访存合并
+
+3.. Use `pinned memory` for large data transfer. Batch several small transfers to a large one can also reduce the `per-transfer overhead`.
+
+Unified Memory
+
+### L1 & L2 Cache:
+
+### Shared Memory:
+1. Bank conflict
+
+2. 数据重排，从而实现合并访存。
+
+### Constant Memory & Texture Cache (Read-Only Cache)
+
+Texture Cache: 适合零散数据的读取（很难进行合并访问，从而利用L1 Cache）。
+
+### Warp Shuffle Instruction
+
+
+
+## SM资源分割/调度
+
+多约束问题，或者说水桶效应。
+
+一般需要关注的资源：Thread Block, Thread, Registers, Shared Memory。
+
+Data Pre-fetching
+
+## kernel启动参数配置
+
+## 指令优化
+
+
+
+## 常见问题&优化思路
+
+### 规约问题
+
+### 矩阵乘法
+
+### 矩阵转置
+
+### 七点模板
+
+## Ref:
+
+1. [Professional CUDA C Programming](https://www.wiley.com/en-hk/Professional+CUDA+C+Programming-p-9781118739327)
+2. [CUDA C++ Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide)
+3. [CUDA C++ Best Practices Guide]
+4. (https://docs.nvidia.com/cuda/cuda-c-best-practices-guide)

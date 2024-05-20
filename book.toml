@@ -1,0 +1,6 @@
+[book]
+authors = ["Huayu Zhang"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Huayu Blogs"

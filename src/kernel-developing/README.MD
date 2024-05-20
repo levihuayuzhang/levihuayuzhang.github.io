@@ -1,0 +1,3 @@
+# Kernel Developing
+
+- [记一次内核之旅--修复板载声卡前置放大器驱动](2023-05-26-think-book-16p-sound-fix.md)
