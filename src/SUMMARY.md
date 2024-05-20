@@ -9,10 +9,8 @@
 - [计算机基础](cs-basics/README.md)
   - [Classic Sorting Algos](cs-basics/2023-12-21-sorting-algorithms.md)
 
----
-# 开发日志
-- [IndustryBB](dev-blogs/README.md)
-  - [记一次内核之旅--修复板载声卡前置放大器驱动](dev-blogs/industrybb.md)
+- [开发日志](dev-blogs/README.md)
+  - [IndustryBB](dev-blogs/industrybb.md)
 
 ---
 # 其他
