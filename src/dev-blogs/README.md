@@ -1,1 +1,3 @@
-# IndustryBB
+# Development Blogs
+
+- [IndustryBB](./industrybb.md)

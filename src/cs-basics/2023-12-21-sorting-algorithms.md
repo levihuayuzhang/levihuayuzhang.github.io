@@ -9,6 +9,7 @@ categories:
     - algorithms
 toc: true
 --- -->
+# Classic Sorting Algorithms
 
 [LeetCode 912](https://leetcode.cn/problems/sort-an-array/)
 

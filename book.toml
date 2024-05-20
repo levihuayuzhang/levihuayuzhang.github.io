@@ -1,13 +1,20 @@
 [book]
+title = "Huayu's Blogs"
 authors = ["Huayu Zhang"]
 description = "The Huayu's Blogs"
-language = "zh"
+language = "en"
 multilingual = true
 src = "src"
-title = "Huayu's Blogs"
 
+[build]
+create-missing = false
 
 [output.html]
 mathjax-support = true
+no-section-label = true
 git-repository-url = "https://github.com/levihuayuzhang/levihuayuzhang.github.io"
 git-repository-icon = "fa-github"
+
+[output.html.fold]
+enable = true
+level = 0
