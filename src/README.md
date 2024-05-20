@@ -1,4 +1,4 @@
-欢迎阅读～
+欢迎阅读。
 
 ### 技术随笔
 - [内核开发](kernel-developing/index.md)
