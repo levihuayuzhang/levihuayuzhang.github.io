@@ -1,4 +1,4 @@
----
+<!-- ---
 layout: post
 title:  "Classic Sorting Algorithms"
 date:   2023-12-21 15:26:30 +0800
@@ -8,7 +8,7 @@ tags:
 categories:
     - algorithms
 toc: true
----
+--- -->
 
 [LeetCode 912](https://leetcode.cn/problems/sort-an-array/)
 
