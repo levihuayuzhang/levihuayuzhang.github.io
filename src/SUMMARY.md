@@ -16,3 +16,5 @@
 # 其他
 - [社论](editorial/README.md)
   - [信息论与文明](editorial/information-theory-and-civilization.md)
+- [读后感](after-read/README.md)
+  - [读《国富论》](after-read/read-wealth-of-nations.md)
