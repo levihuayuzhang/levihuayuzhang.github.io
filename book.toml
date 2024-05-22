@@ -2,7 +2,7 @@
 title = "星辰大海"
 authors = ["Huayu Zhang"]
 description = "The Huayu's Blogs"
-language = "en"
+language = "zh-CN"
 multilingual = true
 src = "src"
 
