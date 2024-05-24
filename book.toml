@@ -10,6 +10,8 @@ src = "src"
 create-missing = false
 
 [output.html]
+default-theme = "navy"
+preferred-dark-theme = "navy"
 mathjax-support = true
 no-section-label = true
 git-repository-url = "https://github.com/levihuayuzhang/levihuayuzhang.github.io"
@@ -22,3 +24,9 @@ level = 0
 [output.html.playground]
 runnable = true
 editable = true
+copyable = true
+line-numbers = true
+
+[output.html.print]
+enable = true    # include support for printable output
+page-break = true # insert page-break after each chapter
