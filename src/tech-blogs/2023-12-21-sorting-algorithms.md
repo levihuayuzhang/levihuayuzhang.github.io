@@ -175,7 +175,9 @@ public:
 
 ### Shell Sort
 
-Best time complexity: $$O(nlogn)$$
+<!-- Best time complexity: $$O(nlogn)$$ -->
+<!-- https://rust-lang.github.io/mdBook/format/mathjax.html?highlight=math#mathjax-support -->
+Best time complexity: \\( O(nlogn) \\)
 
 Add a gap compare to insertion sort:
 
