@@ -147,45 +147,45 @@
 }
 
 .navy {
-    --bg: hsl(0, 0%, 0%);
+    --bg: hsl(0, 0%, 10%);
     --fg: #ffffff;
 
-    --sidebar-bg: #262729;
-    --sidebar-fg: #f1f8f3;
-    --sidebar-non-existant: #505274;
-    --sidebar-active: #25ff42;
-    --sidebar-spacer: #dc1d1d;
+    --sidebar-bg: #353535;
+    --sidebar-fg: #cacaca;
+    --sidebar-non-existant: #dafa4b;
+    --sidebar-active: #25ff34;
+    --sidebar-spacer: #9d00ff;
 
     --scrollbar: var(--sidebar-fg);
 
-    --icons: #00d9ff;
-    --icons-hover: #ffee00;
+    --icons: hsl(0, 0%, 100%);
+    --icons-hover: #ff5e00;
 
-    --links: #6fff00;
+    --links: #00ff04;
 
-    --inline-code-color: #e564ff;
+    --inline-code-color: #ff6a00;
 
-    --theme-popup-bg: #161923;
+    --theme-popup-bg: #363b40;
     --theme-popup-border: #737480;
-    --theme-hover: #282e40;
+    --theme-hover: #383b44;
 
-    --quote-bg: hsl(226, 15%, 17%);
-    --quote-border: hsl(226, 15%, 22%);
+    --quote-bg: hsl(228, 13%, 22%);
+    --quote-border: hsl(225, 20%, 20%);
 
-    --warning-border: #ffb700;
+    --warning-border: #ff5500;
 
-    --table-border-color: hsl(73, 23%, 16%);
-    --table-header-bg: hsl(226, 23%, 31%);
-    --table-alternate-bg: hsl(226, 23%, 14%);
+    --table-border-color: hsl(190, 5%, 26%);
+    --table-header-bg: hsl(78, 100%, 50%);
+    --table-alternate-bg: hsl(166, 76%, 20%);
 
     --searchbar-border-color: #04ffb0;
     --searchbar-bg: #ffffff;
-    --searchbar-fg: #520150;
-    --searchbar-shadow-color: #aaa;
-    --searchresults-header-fg: #5f5f71;
+    --searchbar-fg: #80007d;
+    --searchbar-shadow-color: #6d6c6c;
+    --searchresults-header-fg: #e3cc00;
     --searchresults-border-color: #5c5c68;
-    --searchresults-li-bg: #242d30;
-    --search-mark-bg: #a2cff5;
+    --searchresults-li-bg: #1f292c;
+    --search-mark-bg: #fffb00;
 
     --color-scheme: dark;
 }
