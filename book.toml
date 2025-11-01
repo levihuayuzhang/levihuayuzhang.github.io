@@ -1,10 +1,8 @@
 [book]
 title = "Sea of Stars"
-authors = ["Huayu Zhang"]
 description = "The Huayu's Blogs"
-language = "en-US"
-multilingual = true
-src = "src"
+authors = ["Huayu Zhang"]
+language = "en"
 
 [build]
 create-missing = false
@@ -13,7 +11,6 @@ create-missing = false
 mathjax-support = true
 no-section-label = true
 git-repository-url = "https://github.com/levihuayuzhang/levihuayuzhang.github.io"
-git-repository-icon = "fa-github"
 
 [output.html.playground]
 runnable = true
