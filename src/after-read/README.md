@@ -1,3 +1,3 @@
-# 读后感
+# Thoughts After Reading
 
-- [读《国富论》](read-wealth-of-nations.md)
+- [Wealth of Nations](read-wealth-of-nations.md)

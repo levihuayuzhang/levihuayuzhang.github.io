@@ -1,3 +1,3 @@
-# 信息论与文明
+# Information Theory and Civilization
 
 

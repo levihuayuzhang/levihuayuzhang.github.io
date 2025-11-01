@@ -1,1 +1,1 @@
-# 读《国富论》
+# Read: `The Wealth of Nations`
