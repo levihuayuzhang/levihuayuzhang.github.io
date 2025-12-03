@@ -3,9 +3,11 @@
 [Home](README.md)
 
 # Tech Blogs
+- [Thoughts on C++ Build System & Dependencies Management]()
 <!-- - [Concurrent & Async Model: C++26 vs Rust](tech-blogs/2025-11-03-concurrent&async-model-cpp26-vs-rust.md) -->
 - [Concurrent & Async Model: C++26 vs Rust]()
-- [Explore & Dive into C++26](tech-blogs/2025-11-01-explore-and-dive-into-cpp26.md)
+<!-- - [Explore & Dive into C++26](tech-blogs/2025-11-01-explore-and-dive-into-cpp26.md) -->
+- [Explore & Dive into C++26]()
 - [First Journey to the Kernel - Fixing an AMP Linux Driver for Internal Sound Card](tech-blogs/2023-05-26-think-book-16p-sound-fix.md)
 
 ---
